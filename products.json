@@ -1,0 +1,25 @@
+
+{
+  "products": [
+    {"barcode": "8901234561001", "name": "Aashirvaad Rice 5kg", "brand": "Aashirvaad", "category": "Grains & Rice", "aisle": 1, "shelf": 2, "side": "Left", "price": "₹299"},
+    {"barcode": "8901234561002", "name": "India Gate Rice 5kg", "brand": "India Gate", "category": "Grains & Rice", "aisle": 1, "shelf": 3, "side": "Right", "price": "₹320"},
+    {"barcode": "8901234561003", "name": "Tata Salt 1kg", "brand": "Tata", "category": "Spices & Salt", "aisle": 2, "shelf": 1, "side": "Left", "price": "₹25"},
+    {"barcode": "8901234561004", "name": "Aashirvaad Atta 5kg", "brand": "Aashirvaad", "category": "Grains & Rice", "aisle": 1, "shelf": 1, "side": "Left", "price": "₹275"},
+    {"barcode": "8901234561005", "name": "Surf Excel 1kg", "brand": "Surf Excel", "category": "Cleaning", "aisle": 4, "shelf": 2, "side": "Left", "price": "₹180"},
+    {"barcode": "8901234561006", "name": "Ariel Detergent 1kg", "brand": "Ariel", "category": "Cleaning", "aisle": 4, "shelf": 2, "side": "Right", "price": "₹199"},
+    {"barcode": "8901234561007", "name": "Head & Shoulders Shampoo", "brand": "Head & Shoulders", "category": "Personal Care", "aisle": 5, "shelf": 1, "side": "Left", "price": "₹349"},
+    {"barcode": "8901234561008", "name": "Dove Shampoo 340ml", "brand": "Dove", "category": "Personal Care", "aisle": 5, "shelf": 1, "side": "Right", "price": "₹299"},
+    {"barcode": "8901234561009", "name": "Colgate Toothpaste 200g", "brand": "Colgate", "category": "Personal Care", "aisle": 5, "shelf": 3, "side": "Left", "price": "₹99"},
+    {"barcode": "8901234561010", "name": "Pepsodent Toothpaste 200g", "brand": "Pepsodent", "category": "Personal Care", "aisle": 5, "shelf": 3, "side": "Right", "price": "₹89"},
+    {"barcode": "8901234561011", "name": "Amul Butter 500g", "brand": "Amul", "category": "Dairy", "aisle": 6, "shelf": 1, "side": "Left", "price": "₹250"},
+    {"barcode": "8901234561012", "name": "Nandini Milk 1L", "brand": "Nandini", "category": "Dairy", "aisle": 6, "shelf": 2, "side": "Left", "price": "₹60"},
+    {"barcode": "8901234561013", "name": "Lay's Classic Salted", "brand": "Lay's", "category": "Snacks", "aisle": 3, "shelf": 1, "side": "Left", "price": "₹20"},
+    {"barcode": "8901234561014", "name": "Kurkure Masala Munch", "brand": "Kurkure", "category": "Snacks", "aisle": 3, "shelf": 1, "side": "Right", "price": "₹20"},
+    {"barcode": "8901234561015", "name": "Bisleri Water 1L", "brand": "Bisleri", "category": "Beverages", "aisle": 7, "shelf": 1, "side": "Left", "price": "₹20"},
+    {"barcode": "8901234561016", "name": "Coca Cola 750ml", "brand": "Coca Cola", "category": "Beverages", "aisle": 7, "shelf": 2, "side": "Left", "price": "₹45"},
+    {"barcode": "8901234561017", "name": "Maggi Noodles 70g", "brand": "Maggi", "category": "Instant Food", "aisle": 2, "shelf": 3, "side": "Right", "price": "₹14"},
+    {"barcode": "8901234561018", "name": "Yippee Noodles 70g", "brand": "Yippee", "category": "Instant Food", "aisle": 2, "shelf": 3, "side": "Left", "price": "₹14"},
+    {"barcode": "8901234561019", "name": "Fortune Sunflower Oil 1L", "brand": "Fortune", "category": "Oils", "aisle": 2, "shelf": 2, "side": "Left", "price": "₹180"},
+    {"barcode": "8901234561020", "name": "Saffola Gold Oil 1L", "brand": "Saffola", "category": "Oils", "aisle": 2, "shelf": 2, "side": "Right", "price": "₹210"}
+  ]
+}

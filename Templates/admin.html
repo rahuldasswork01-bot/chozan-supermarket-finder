@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FindIt — Admin Panel</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #0a8a4a 0%, #045c30 50%, #023d20 100%);
+            padding: 20px;
+            color: white;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 25px;
+            background: rgba(255,255,255,0.08);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 16px;
+            margin-bottom: 30px;
+        }
+
+        .brand {
+            font-size: 22px;
+            font-weight: 900;
+            color: white;
+        }
+
+        .brand span { color: #7fffb2; }
+
+        .nav-links { display: flex; gap: 10px; }
+
+        .nav-btn {
+            padding: 8px 16px;
+            border-radius: 20px;
+            text-decoration: none;
+            font-size: 13px;
+            transition: all 0.3s ease;
+        }
+
+        .store-btn {
+            background: rgba(127,255,178,0.15);
+            border: 1px solid rgba(127,255,178,0.3);
+            color: #7fffb2;
+        }
+
+        .logout-btn {
+            background: rgba(255,80,80,0.15);
+            border: 1px solid rgba(255,80,80,0.3);
+            color: #ff6b6b;
+        }
+
+        .nav-btn:hover { opacity: 0.8; transform: translateY(-1px); }
+
+        /* Stats */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .stat-card {
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 16px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .stat-card .icon { font-size: 28px; margin-bottom: 8px; }
+        .stat-card .value {
+            font-size: 28px;
+            font-weight: 900;
+            color: #7fffb2;
+        }
+        .stat-card .label {
+            color: rgba(255,255,255,0.4);
+            font-size: 12px;
+            letter-spacing: 1px;
+            margin-top: 4px;
+        }
+
+        /* Add Product Form */
+        .add-form {
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 25px;
+            position: relative;
+        }
+
+        .add-form::before {
+            content: '';
+            position: absolute;
+            top: -2px; left: -2px; right: -2px; bottom: -2px;
+            background: linear-gradient(45deg, #7fffb2, #0a8a4a, #7fffb2);
+            background-size: 300% 300%;
+            border-radius: 22px;
+            z-index: -1;
+            animation: borderGlow 3s ease infinite;
+        }
+
+        @keyframes borderGlow {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .form-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: #7fffb2;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .form-group label {
+            color: rgba(255,255,255,0.5);
+            font-size: 11px;
+            letter-spacing: 1px;
+        }
+
+        .form-group input,
+        .form-group select {
+            padding: 12px 15px;
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: 10px;
+            font-size: 14px;
+            color: white;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input::placeholder { color: rgba(255,255,255,0.25); }
+        .form-group input:focus,
+        .form-group select:focus {
+            border-color: #7fffb2;
+            box-shadow: 0 0 15px rgba(127,255,178,0.2);
+        }
+
+        .form-group select option { background: #045c30; }
+
+        .add-btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #7fffb2, #0a8a4a);
+            color: #023d20;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .add-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(127,255,178,0.4);
+        }
+
+        /* Products Table */
+        .table-section {
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 20px;
+            padding: 25px;
+            overflow-x: auto;
+        }
+
+        .table-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: #7fffb2;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            color: rgba(255,255,255,0.4);
+            font-size: 11px;
+            letter-spacing: 1px;
+            padding: 10px 15px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+        }
+
+        td {
+            padding: 14px 15px;
+            font-size: 14px;
+            color: rgba(255,255,255,0.8);
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            transition: background 0.2s;
+        }
+
+        tr:hover td { background: rgba(255,255,255,0.03); }
+
+        .location-badge {
+            background: rgba(127,255,178,0.1);
+            border: 1px solid rgba(127,255,178,0.2);
+            color: #7fffb2;
+            padding: 4px 10px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .delete-btn {
+            background: rgba(255,80,80,0.15);
+            border: 1px solid rgba(255,80,80,0.3);
+            color: #ff6b6b;
+            padding: 6px 14px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .delete-btn:hover {
+            background: rgba(255,80,80,0.3);
+            transform: scale(1.05);
+        }
+
+        @media (max-width: 600px) {
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+            .form-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="brand">Find<span>It</span> ⚙️ Admin</div>
+        <div class="nav-links">
+            <a href="/" class="nav-btn store-btn">🛒 View Store</a>
+            <a href="/admin/logout" class="nav-btn logout-btn">🚪 Logout</a>
+        </div>
+    </nav>
+
+    <!-- Stats -->
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="icon">📦</div>
+            <div class="value">{{ products|length }}</div>
+            <div class="label">TOTAL PRODUCTS</div>
+        </div>
+        <div class="stat-card">
+            <div class="icon">🛤️</div>
+            <div class="value">7</div>
+            <div class="label">AISLES</div>
+        </div>
+        <div class="stat-card">
+            <div class="icon">✅</div>
+            <div class="value">Live</div>
+            <div class="label">SYSTEM STATUS</div>
+        </div>
+    </div>
+
+    <!-- Add Product Form -->
+    <div class="add-form">
+        <div class="form-title">➕ Add New Product</div>
+        <form action="/admin/add" method="POST">
+            <div class="form-grid">
+                <div class="form-group">
+                    <label>BARCODE NUMBER</label>
+                    <input type="text" name="barcode" placeholder="e.g. 8901234561021" required>
+                </div>
+                <div class="form-group">
+                    <label>PRODUCT NAME</label>
+                    <input type="text" name="name" placeholder="e.g. Maggi Noodles 100g" required>
+                </div>
+                <div class="form-group">
+                    <label>BRAND</label>
+                    <input type="text" name="brand" placeholder="e.g. Nestle" required>
+                </div>
+                <div class="form-group">
+                    <label>CATEGORY</label>
+                    <select name="category" required>
+                        <option value="">Select Category</option>
+                        <option>Grains & Rice</option>
+                        <option>Spices & Salt</option>
+                        <option>Instant Food</option>
+                        <option>Oils</option>
+                        <option>Dairy</option>
+                        <option>Snacks</option>
+                        <option>Beverages</option>
+                        <option>Personal Care</option>
+                        <option>Cleaning</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>AISLE NUMBER</label>
+                    <select name="aisle" required>
+                        <option value="">Select Aisle</option>
+                        <option>1</option>
+                        <option>2</option>
+                        <option>3</option>
+                        <option>4</option>
+                        <option>5</option>
+                        <option>6</option>
+                        <option>7</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>SHELF NUMBER</label>
+                    <select name="shelf" required>
+                        <option value="">Select Shelf</option>
+                        <option>1</option>
+                        <option>2</option>
+                        <option>3</option>
+                        <option>4</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>SIDE</label>
+                    <select name="side" required>
+                        <option value="">Select Side</option>
+                        <option>Left</option>
+                        <option>Right</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>PRICE</label>
+                    <input type="text" name="price" placeholder="e.g. ₹99" required>
+                </div>
+            </div>
+            <button type="submit" class="add-btn">➕ Add Product to Store</button>
+        </form>
+    </div>
+
+    <!-- Products Table -->
+    <div class="table-section">
+        <div class="table-title">📦 All Products ({{ products|length }})</div>
+        <table>
+            <thead>
+                <tr>
+                    <th>BARCODE</th>
+                    <th>PRODUCT</th>
+                    <th>BRAND</th>
+                    <th>CATEGORY</th>
+                    <th>LOCATION</th>
+                    <th>PRICE</th>
+                    <th>ACTION</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for product in products %}
+                <tr>
+                    <td style="font-family:monospace; color:rgba(255,255,255,0.4); font-size:12px;">{{ product.barcode }}</td>
+                    <td style="font-weight:600;">{{ product.name }}</td>
+                    <td>{{ product.brand }}</td>
+                    <td>{{ product.category }}</td>
+                    <td>
+                        <span class="location-badge">
+                            A{{ product.aisle }} • S{{ product.shelf }} • {{ product.side }}
+                        </span>
+                    </td>
+                    <td style="color:#7fffb2; font-weight:700;">{{ product.price }}</td>
+                    <td>
+                        <a href="/admin/delete/{{ product.barcode }}" class="delete-btn"
+                           onclick="return confirm('Delete {{ product.name }}?')">
+                            🗑️ Delete
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+</body>
+</html>

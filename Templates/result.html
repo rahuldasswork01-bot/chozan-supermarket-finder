@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FindIt — Results</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #0a8a4a 0%, #045c30 50%, #023d20 100%);
+            padding: 20px;
+        }
+
+        /* Navbar */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 25px;
+            background: rgba(255,255,255,0.08);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 16px;
+            margin-bottom: 30px;
+        }
+
+        .brand {
+            font-size: 22px;
+            font-weight: 900;
+            color: white;
+        }
+
+        .brand span { color: #7fffb2; }
+
+        .back-btn {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 20px;
+            text-decoration: none;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            background: rgba(255,255,255,0.2);
+            transform: translateX(-3px);
+        }
+
+        /* Search Result Header */
+        .result-header {
+            text-align: center;
+            margin-bottom: 30px;
+            color: white;
+        }
+
+        .result-header h2 {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+
+        .result-header p {
+            color: rgba(255,255,255,0.5);
+            font-size: 14px;
+        }
+
+        .result-count {
+            display: inline-block;
+            background: rgba(127,255,178,0.2);
+            border: 1px solid #7fffb2;
+            color: #7fffb2;
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 700;
+            margin-top: 8px;
+        }
+
+        /* Product Cards */
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 20px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .product-card {
+            background: rgba(255,255,255,0.08);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.12);
+            border-radius: 20px;
+            padding: 25px;
+            animation: cardIn 0.5s ease both;
+            transition: transform 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .product-card:nth-child(1) { animation-delay: 0.1s; }
+        .product-card:nth-child(2) { animation-delay: 0.2s; }
+        .product-card:nth-child(3) { animation-delay: 0.3s; }
+        .product-card:nth-child(4) { animation-delay: 0.4s; }
+
+        @keyframes cardIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .product-card:hover { transform: translateY(-5px); }
+
+        .product-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0;
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(180deg, #7fffb2, #0a8a4a);
+        }
+
+        .product-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 15px;
+        }
+
+        .product-name {
+            font-size: 18px;
+            font-weight: 700;
+            color: white;
+            flex: 1;
+        }
+
+        .product-price {
+            font-size: 20px;
+            font-weight: 900;
+            color: #7fffb2;
+            margin-left: 10px;
+        }
+
+        .product-brand {
+            color: rgba(255,255,255,0.5);
+            font-size: 13px;
+            margin-bottom: 15px;
+        }
+
+        .product-category {
+            display: inline-block;
+            background: rgba(127,255,178,0.1);
+            border: 1px solid rgba(127,255,178,0.3);
+            color: #7fffb2;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            margin-bottom: 20px;
+        }
+
+        /* Location Box */
+        .location-box {
+            background: rgba(0,0,0,0.2);
+            border-radius: 14px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+
+        .location-title {
+            color: rgba(255,255,255,0.5);
+            font-size: 11px;
+            letter-spacing: 2px;
+            margin-bottom: 12px;
+        }
+
+        .location-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+        }
+
+        .location-item {
+            text-align: center;
+            background: rgba(255,255,255,0.05);
+            border-radius: 10px;
+            padding: 12px 8px;
+        }
+
+        .location-value {
+            font-size: 24px;
+            font-weight: 900;
+            color: #7fffb2;
+        }
+
+        .location-label {
+            font-size: 10px;
+            color: rgba(255,255,255,0.4);
+            letter-spacing: 1px;
+            margin-top: 4px;
+        }
+
+        /* Store Map */
+        .map-section {
+            margin-top: 12px;
+        }
+
+        .map-title {
+            color: rgba(255,255,255,0.5);
+            font-size: 11px;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+        }
+
+        .store-map {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 4px;
+        }
+
+        .aisle-block {
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 6px;
+            padding: 8px 4px;
+            text-align: center;
+            font-size: 10px;
+            color: rgba(255,255,255,0.3);
+            transition: all 0.3s ease;
+        }
+
+        .aisle-block.active {
+            background: rgba(127,255,178,0.25);
+            border-color: #7fffb2;
+            color: #7fffb2;
+            font-weight: 700;
+            box-shadow: 0 0 15px rgba(127,255,178,0.3);
+            animation: pulse 1.5s ease infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 0 15px rgba(127,255,178,0.3); }
+            50% { box-shadow: 0 0 25px rgba(127,255,178,0.6); }
+        }
+
+        .barcode-info {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 12px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 8px;
+            margin-top: 10px;
+        }
+
+        .barcode-info span {
+            color: rgba(255,255,255,0.3);
+            font-size: 11px;
+            font-family: monospace;
+            letter-spacing: 1px;
+        }
+
+        /* No Results */
+        .no-results {
+            text-align: center;
+            color: white;
+            padding: 60px 20px;
+            animation: fadeUp 0.5s ease;
+        }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .no-results .emoji { font-size: 60px; margin-bottom: 20px; }
+        .no-results h2 { font-size: 24px; margin-bottom: 10px; }
+        .no-results p { color: rgba(255,255,255,0.5); margin-bottom: 25px; }
+
+        .try-again-btn {
+            display: inline-block;
+            background: linear-gradient(135deg, #7fffb2, #0a8a4a);
+            color: #023d20;
+            padding: 14px 30px;
+            border-radius: 14px;
+            text-decoration: none;
+            font-weight: 800;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .try-again-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(127,255,178,0.4);
+        }
+
+        @media (max-width: 480px) {
+            .products-grid { grid-template-columns: 1fr; }
+            .store-map { grid-template-columns: repeat(4, 1fr); }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="brand">Find<span>It</span> 🛒</div>
+        <a href="/" class="back-btn">← Search Again</a>
+    </nav>
+
+    {% if results %}
+    <!-- Result Header -->
+    <div class="result-header">
+        <h2 style="color:white;">Results for "<span style="color:#7fffb2;">{{ query }}</span>"</h2>
+        <div class="result-count">{{ results|length }} product(s) found</div>
+    </div>
+
+    <!-- Product Cards -->
+    <div class="products-grid">
+        {% for product in results %}
+        <div class="product-card">
+            <div class="product-header">
+                <div class="product-name">{{ product.name }}</div>
+                <div class="product-price">{{ product.price }}</div>
+            </div>
+            <div class="product-brand">🏷️ {{ product.brand }}</div>
+            <div class="product-category">📦 {{ product.category }}</div>
+
+            <!-- Location -->
+            <div class="location-box">
+                <div class="location-title">📍 EXACT LOCATION</div>
+                <div class="location-grid">
+                    <div class="location-item">
+                        <div class="location-value">{{ product.aisle }}</div>
+                        <div class="location-label">AISLE</div>
+                    </div>
+                    <div class="location-item">
+                        <div class="location-value">{{ product.shelf }}</div>
+                        <div class="location-label">SHELF</div>
+                    </div>
+                    <div class="location-item">
+                        <div class="location-value">{{ product.side[0] }}</div>
+                        <div class="location-label">{{ product.side|upper }} SIDE</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Store Map -->
+            <div class="map-section">
+                <div class="map-title">🗺️ STORE MAP — YOUR AISLE IS HIGHLIGHTED</div>
+                <div class="store-map">
+                    {% for i in range(1, 8) %}
+                    <div class="aisle-block {% if i == product.aisle %}active{% endif %}">
+                        <div>A{{ i }}</div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- Barcode -->
+            <div class="barcode-info">
+                <span>📊 BARCODE: {{ product.barcode }}</span>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    {% else %}
+    <!-- No Results -->
+    <div class="no-results">
+        <div class="emoji">🔍</div>
+        <h2>No Products Found!</h2>
+        <p>We couldn't find "<strong>{{ query }}</strong>" in our database.<br>Try searching by barcode, product name or category.</p>
+        <a href="/" class="try-again-btn">🔄 Try Again</a>
+    </div>
+    {% endif %}
+
+</body>
+</html>

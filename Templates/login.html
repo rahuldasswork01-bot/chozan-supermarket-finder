@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FindIt — Admin Login</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #0a8a4a 0%, #045c30 50%, #023d20 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .card-wrapper { perspective: 1000px; }
+
+        .container {
+            background: rgba(255,255,255,0.07);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.12);
+            padding: 50px 40px;
+            border-radius: 24px;
+            width: 420px;
+            text-align: center;
+            box-shadow: 0 25px 45px rgba(0,0,0,0.3);
+            position: relative;
+            transition: transform 0.1s ease;
+            transform-style: preserve-3d;
+        }
+
+        .container::before {
+            content: '';
+            position: absolute;
+            top: -2px; left: -2px; right: -2px; bottom: -2px;
+            background: linear-gradient(45deg, #7fffb2, #0a8a4a, #7fffb2);
+            background-size: 300% 300%;
+            border-radius: 26px;
+            z-index: -1;
+            animation: borderGlow 3s ease infinite;
+        }
+
+        @keyframes borderGlow {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .logo { font-size: 50px; margin-bottom: 10px; }
+
+        h1 {
+            color: white;
+            font-size: 26px;
+            font-weight: 800;
+            margin-bottom: 6px;
+        }
+
+        p.subtitle {
+            color: rgba(255,255,255,0.4);
+            font-size: 13px;
+            letter-spacing: 1px;
+            margin-bottom: 30px;
+        }
+
+        .input-group {
+            position: relative;
+            margin-bottom: 16px;
+            text-align: left;
+        }
+
+        .input-group label {
+            color: rgba(255,255,255,0.5);
+            font-size: 12px;
+            letter-spacing: 1px;
+            margin-bottom: 6px;
+            display: block;
+        }
+
+        .input-group span {
+            position: absolute;
+            left: 15px;
+            bottom: 14px;
+            font-size: 18px;
+        }
+
+        input {
+            width: 100%;
+            padding: 14px 14px 14px 45px;
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: 12px;
+            font-size: 15px;
+            color: white;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        input::placeholder { color: rgba(255,255,255,0.25); }
+        input:focus {
+            border-color: #7fffb2;
+            background: rgba(127,255,178,0.1);
+            box-shadow: 0 0 20px rgba(127,255,178,0.2);
+        }
+
+        button {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #7fffb2, #0a8a4a);
+            color: #023d20;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            cursor: pointer;
+            font-weight: 800;
+            margin-top: 10px;
+            transition: all 0.3s ease;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(127,255,178,0.4);
+        }
+
+        .error {
+            background: rgba(255,80,80,0.15);
+            border: 1px solid rgba(255,80,80,0.3);
+            color: #ff6b6b;
+            padding: 12px;
+            border-radius: 10px;
+            margin-bottom: 16px;
+            font-size: 14px;
+        }
+
+        .hint {
+            margin-top: 20px;
+            color: rgba(255,255,255,0.3);
+            font-size: 12px;
+        }
+
+        .back-link {
+            display: block;
+            margin-top: 15px;
+            color: rgba(255,255,255,0.4);
+            text-decoration: none;
+            font-size: 13px;
+            transition: color 0.3s;
+        }
+
+        .back-link:hover { color: #7fffb2; }
+    </style>
+</head>
+<body>
+    <div class="card-wrapper" id="cardWrapper">
+        <div class="container" id="card">
+            <div class="logo">⚙️</div>
+            <h1>Admin Portal</h1>
+            <p class="subtitle">STORE MANAGEMENT SYSTEM</p>
+
+            {% if error %}
+            <div class="error">⚠️ {{ error }}</div>
+            {% endif %}
+
+            <form action="/admin/login" method="POST">
+                <div class="input-group">
+                    <label>USERNAME</label>
+                    <span>👤</span>
+                    <input type="text" name="username" placeholder="Admin username" required>
+                </div>
+                <div class="input-group">
+                    <label>PASSWORD</label>
+                    <span>🔒</span>
+                    <input type="password" name="password" placeholder="Admin password" required>
+                </div>
+                <button type="submit">🚀 Login to Admin</button>
+            </form>
+
+            <div class="hint">Default: admin / admin123</div>
+            <a href="/" class="back-link">← Back to Store</a>
+        </div>
+    </div>
+
+    <script>
+        const card = document.getElementById('card');
+        const wrapper = document.getElementById('cardWrapper');
+        wrapper.addEventListener('mousemove', (e) => {
+            const rect = wrapper.getBoundingClientRect();
+            const x = e.clientX - rect.left - rect.width/2;
+            const y = e.clientY - rect.top - rect.height/2;
+            card.style.transform = `rotateX(${(-y/rect.height)*15}deg) rotateY(${(x/rect.width)*15}deg)`;
+        });
+        wrapper.addEventListener('mouseleave', () => {
+            card.style.transform = 'rotateX(0) rotateY(0)';
+        });
+    </script>
+</body>
+</html>
